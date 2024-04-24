@@ -54,8 +54,8 @@ namespace LibraryManagement.Repositories.Repositories
                                           Bookid = book.Bookid,
                                           BorrowerName = borrowers.Borrowername,
                                           City = book.City,
-                                          Dateofissue = book.Dateofissue,
-                                          Genere = book.Genere,
+                                          Dateofissue = (DateTime)book.Dateofissue,
+                                          Genere = (short)book.Genere,
                                           Createddate = book.Createddate,
 
                                       }).OrderBy(x => x.Createddate).ToList();
@@ -220,8 +220,8 @@ namespace LibraryManagement.Repositories.Repositories
                          Bookid = book.Bookid,
                          BorrowerName = borrowers.Borrowername,
                          City = book.City,
-                         Dateofissue = book.Dateofissue,
-                         Genere = book.Genere,
+                         Dateofissue = (DateTime)book.Dateofissue,
+                         Genere = (short)book.Genere,
                          Createddate = book.Createddate,
 
                      })

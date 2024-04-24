@@ -21,6 +21,7 @@ function page() {
 	$('#filterFormlistpbtn').click();
 
 };
+
 var city = [
 	'Kolhapur',
 	'Port Blair',

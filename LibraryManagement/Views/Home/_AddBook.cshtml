@@ -24,12 +24,12 @@
         <div class="row " >
             <div class="col-md-6" >
                 <div class="form-s-control w-100 mt-3">
-                    <input asp-for="Bookname" required placeholder=" " class="form-s-outline w-100" type="text">
+                    <input asp-for="Bookname" placeholder=" " class="form-s-outline w-100" id="bookname" type="text" required>
                     <label class="form-s-label">Book Name </label>
                 </div>
                 <span asp-validation-for="Bookname" class="text-danger"></span>
                 <div class="invalid-feedback">
-                    Please select a valid region.
+                    Please Enter a valid bookname.
                 </div>
             </div>
             <div class="col-md-6">
@@ -37,16 +37,31 @@
                     <input asp-for="Author" required placeholder=" " class="form-s-outline w-100" type="text">
                     <label class="form-s-label">Author</label>
                 </div>
+                <span asp-validation-for="Author" class="text-danger"></span>
+
+                <div class="invalid-feedback">
+                    Please Enter a valid Author.
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="form-s-control w-100 mt-3">
                     <input asp-for="BorrowerName" required placeholder=" " class="form-s-outline w-100" type="text">
                     <label class="form-s-label">Borrower Name</label>
                 </div>
+                <span asp-validation-for="BorrowerName" class="text-danger"></span>
+
+                <div class="invalid-feedback">
+                    Please enter a valid Borrowe.
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="form-s-control w-100 mt-3">
                     <input placeholder="Date of Issue" required id="dateofissue" asp-for="Dateofissue" class="form-s-outline w-100" type="date">
+                </div>
+                <span asp-validation-for="Dateofissue" class="text-danger"></span>
+
+                <div class="invalid-feedback">
+                    Please select a valid Date.
                 </div>
             </div>
             <div class="col-md-6">
@@ -57,13 +72,18 @@
                     </select>
                     <label class="form-s-label">Genere</label>
                 </div>
+                <span asp-validation-for="Genere" class="text-danger"></span>
+
+                <div class="invalid-feedback">
+                    Please select a valid Geners.
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="form-s-control w-100 mt-3">
 					<input id="myInput" placeholder=" " asp-for="City" required class="form-s-outline w-100" type="text">
                     <label  class="form-s-label">City</label>
                 </div>
-                <input required type="text" />
+               
             </div>
 
         </div>
@@ -131,11 +151,12 @@
 
    
 </script>
+
 <script>
     function autocomplete(inp, arr) {
-       
+
         var currentFocus;
-        
+
         inp.addEventListener("input", function (e) {
             var a, b, i, val = this.value;
             /*close any already open lists of autocompleted values*/
@@ -222,7 +243,7 @@
         });
     }
 
-	
 
-	autocomplete(document.getElementById("myInput"), city);
+
+    autocomplete(document.getElementById("myInput"), city);
 </script>
