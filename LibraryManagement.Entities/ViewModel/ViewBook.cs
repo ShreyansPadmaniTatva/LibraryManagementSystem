@@ -18,7 +18,7 @@ namespace LibraryManagement.Entities.ViewModel
 
         //Extra Inputs
         public string? SearchInput { get; set; }
-        public string? Borrowerid { get; set; }
+        public int? Borrowerid { get; set; }
 
         //sORTING
         public string SortedColumn { get; set; }
@@ -29,24 +29,32 @@ namespace LibraryManagement.Entities.ViewModel
     public class ViewBook
     {
         public int Bookid { get; set; }
+        [Required(ErrorMessage = "Bookname is required")]
+        [StringLength(10, MinimumLength = 2, ErrorMessage = "Enter valid Bookname")]
+        [RegularExpression(@"^(?=.*\S)[a-zA-Z\s.'-]+$", ErrorMessage = "Enter a valid Book name")]
+        public string Bookname { get; set; }
 
-        public string Bookname { get; set; } = null!;
+        [Required(ErrorMessage = "Author is required")]
+        [StringLength(10, MinimumLength = 2, ErrorMessage = "Enter valid Author")]
+        [RegularExpression(@"^(?=.*\S)[a-zA-Z\s.'-]+$", ErrorMessage = "Enter a valid city name")]
+        public string Author { get; set; }
 
+        [Required(ErrorMessage = "Date is required")]
+        [StringLength(10, MinimumLength = 2, ErrorMessage = "Enter valid Date")]
+        public DateTime Dateofissue { get; set; }
 
-        public string? Author { get; set; }
-
-   
-        public DateTime? Dateofissue { get; set; }
-
-       
-        public short? Genere { get; set; }
+        [Required(ErrorMessage = "Genere is required")]
+        [StringLength(10, MinimumLength = 2, ErrorMessage = "Enter valid Genere")]
+        public short Genere { get; set; }
 
         
         public int Borrowerid { get; set; }
         public string? BorrowerName { get; set; } = null!;
 
-       
-        public string? City { get; set; }
+        [Required(ErrorMessage = "City is required")]
+        [StringLength(10, MinimumLength = 2, ErrorMessage = "Enter valid City")]
+        [RegularExpression(@"^(?=.*\S)[a-zA-Z\s.'-]+$", ErrorMessage = "Enter a valid city name")]
+        public string City { get; set; }
 
        
         public bool? Isdeleted { get; set; }

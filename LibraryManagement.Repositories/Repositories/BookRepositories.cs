@@ -10,18 +10,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LibraryManagement.Repositories.Repositories
 {
     public class BookRepositories : IBookRepositories
     {
+        #region Constructor
         private readonly ApplicationDbContext _context;
 
         public BookRepositories(ApplicationDbContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region GetBooks
+        /// <summary>
+        /// Get All None deleted book with filter on borrower And BookName
+        /// </summary>
+        /// <param name="bm"></param>
+        /// <returns></returns>
         public BookModel GetBooks(BookModel bm)
         {
             BookModel dm = new BookModel();
@@ -32,9 +41,11 @@ namespace LibraryManagement.Repositories.Repositories
                                       join borrower in _context.Borrowers
                                       on book.Borrowerid equals borrower.Borrowerid into BookGroup
                                       from borrowers in BookGroup.DefaultIfEmpty()
-                                      where  (book.Isdeleted == false)
-                                      orderby book.Createddate
-                                      select new ViewBook
+                                      where ((bm.SearchInput == null ||
+                                            book.Bookname.ToLower().Contains(bm.SearchInput.ToLower()) || book.Author.ToLower().Contains(bm.SearchInput.ToLower()) ||
+                                            book.City.ToLower().Contains(bm.SearchInput.ToLower())) && (book.Isdeleted == false)) && (bm.Borrowerid == null || borrowers.Borrowerid == bm.Borrowerid)
+                                            orderby book.Createddate
+                                            select new ViewBook
                                       {
                                           Bookname = book.Bookname,
                                           Isdeleted = false,
@@ -50,34 +61,22 @@ namespace LibraryManagement.Repositories.Repositories
                                       }).OrderBy(x => x.Createddate).ToList();
 
 
-            if (bm.IsAscending == true)
-            {
-                allData = bm.SortedColumn switch
-                {
-                    "Bookname" => allData.OrderBy(x => x.Bookname).ToList(),
-                    "Author" => allData.OrderBy(x => x.Author).ToList(),
-                    _ => allData.OrderBy(x => x.Createddate).ToList()
-                };
-            }
-            else
-            {
-                allData = bm.SortedColumn switch
-                {
-                    "Bookname" => allData.OrderByDescending(x => x.Bookname).ToList(),
-                    "Author" => allData.OrderByDescending(x => x.Author).ToList(),
-                    _ => allData.OrderByDescending(x => x.Createddate).ToList()
-                };
-            }
+           
 
             dm.TotalPages = (int)Math.Ceiling((double)allData.Count() / bm.PageSize);
             dm.BookList = allData.Skip((bm.CurrentPage - 1) * bm.PageSize).Take(bm.PageSize).ToList();
             dm.PageSize = bm.PageSize;
             dm.CurrentPage = bm.CurrentPage;
-            dm.SortedColumn = bm.SortedColumn;
-            dm.IsAscending = bm.IsAscending;
             return dm;
         }
+        #endregion
 
+        #region AddBook
+        /// <summary>
+        /// When Book Will Be add Then Chek If Borrower Is nEw Or Old If New Then First Insert Borrow After Book
+        /// </summary>
+        /// <param name="vb"></param>
+        /// <returns></returns>
         public async Task<bool> AddBook(ViewBook vb)
         {
             try
@@ -128,7 +127,14 @@ namespace LibraryManagement.Repositories.Repositories
             }
             return true;
         }
+        #endregion
 
+        #region EditBook
+        /// <summary>
+        /// Edit Book With That Id And Chake Borrower Is new Or Old
+        /// </summary>
+        /// <param name="vb"></param>
+        /// <returns></returns>
         public async Task<bool> EditBook(ViewBook vb)
         {
             try
@@ -177,12 +183,26 @@ namespace LibraryManagement.Repositories.Repositories
             }
             return true;
         }
+        #endregion
 
+        #region IsBorrowerExist
+        /// <summary>
+        /// Check BorrowerExit Or Not 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public async Task<Borrower> IsBorrowerExist(string name)
         {
             return await _context.Borrowers.Where(r => r.Borrowername.ToLower() == name.ToLower()).FirstOrDefaultAsync();
         }
+        #endregion
 
+        #region GetBookById
+        /// <summary>
+        /// Get Detalis Of Book By BookId
+        /// </summary>
+        /// <param name="BookId"></param>
+        /// <returns></returns>
         public ViewBook GetBookById(int BookId)
         {
             var v = (from book in _context.Books
@@ -208,6 +228,14 @@ namespace LibraryManagement.Repositories.Repositories
                 .FirstOrDefault(); 
             return v;
         }
+        #endregion
+
+        #region RemoveBook
+        /// <summary>
+        /// Remove Book soft delete here
+        /// </summary>
+        /// <param name="BookId"></param>
+        /// <returns></returns>
 
         public async Task<bool> RemoveBook(int BookId)
         {
@@ -229,5 +257,17 @@ namespace LibraryManagement.Repositories.Repositories
             }
             return true;
         }
+        #endregion
+
+        #region ComboBoxBorrower
+        /// <summary>
+        /// DropDown OF borrower
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<BrrowerComboBox>> ComboBoxBorrower()
+        {
+            return await _context.Borrowers.Select(result => new BrrowerComboBox { BrrowerId = result.Borrowerid,BrrowerName = result.Borrowername }).ToListAsync();
+        }
+        #endregion
     }
 }

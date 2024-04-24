@@ -1,399 +1,1492 @@
-var body = document.body;
-var currentTheme = localStorage.getItem("Theme");
-body.setAttribute('data-bs-theme', currentTheme);
-if (currentTheme == 'dark') {
-    document.getElementById('thm').style.display = 'block';
-    document.getElementById('thm2').style.display = 'none';
-}
-else {
-    document.getElementById('thm2').style.display = 'block';
-    document.getElementById('thm').style.display = 'none';
-}
-function mode() {
-
-    var body = document.body;
-    // var currentTheme = body.getAttribute('data-bs-theme');
-    var currentTheme = localStorage.getItem("Theme");
-
-    // Toggle between 'light' and 'dark'
-    var newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    if (newTheme == 'dark') {
-        document.getElementById('thm').style.display = 'block';
-        document.getElementById('thm2').style.display = 'none';
-    }
-    else {
-        document.getElementById('thm2').style.display = 'block';
-        document.getElementById('thm').style.display = 'none';
-    }
-    // Update the data-bs-theme attribute
-    body.setAttribute('data-bs-theme', newTheme);
-    localStorage.setItem("Theme", newTheme);
-
-    console.log(body.getAttribute('data-bs-theme'));
-}
-function goBack() {
-    // Check if there is a previous unique URL
-    var previousUrl = getPreviousUniqueUrl();
-    if (previousUrl) {
-        // If there is a previous URL, navigate to it
-        window.location.href = previousUrl;
-    } else {
-        // If there is no previous URL, go back in history
-        history.back();
-    }
-}
-
-let navLinks = document.querySelectorAll('.nav-link');
-
-// Loop through each 'nav-link' element
-navLinks.forEach(function (navLink) {
-    // Check if the 'nav-link' element has the class 'active'
-    if (navLink.classList.contains('active')) {
-        // If it has the class 'active', find its parent element with the class 'nav-item' and add a CSS class to it
-        let parentNavItem = navLink.closest('.nav-item');
-        if (parentNavItem) {
-            parentNavItem.classList.add('active-item');
-        }
-    }
-});
-// Function to get the previous unique URL
-function getPreviousUniqueUrl() {
-    var currentUrl = window.location.href;
-    var uniqueUrls = JSON.parse(localStorage.getItem('uniqueUrls')) || [];
-    var previousUrl = uniqueUrls.pop();
-    while (previousUrl === currentUrl) {
-        // Remove current URL if it's the same as the previous one
-        previousUrl = uniqueUrls.pop();
-    }
-    // Update the unique URLs in local storage
-    localStorage.setItem('uniqueUrls', JSON.stringify(uniqueUrls));
-    return previousUrl;
-}
-function emptyuniqueurl() {
-    localStorage.setItem('uniqueUrls', null);
-}
-// Store the current URL when the page loads
-var currentUrl = window.location.href;
-var uniqueUrls = JSON.parse(localStorage.getItem('uniqueUrls')) || [];
-if (!uniqueUrls.includes(currentUrl)) {
-    uniqueUrls.push(currentUrl);
-    localStorage.setItem('uniqueUrls', JSON.stringify(uniqueUrls));
-}
-
-function validateForm() {
-    // Implement your validation logic here
-    var formIsValid = true; // Assume form is valid by default
-
-    // Example: Validate form fields
-    var inputs = document.querySelectorAll('#formAddEditSave_UMS inputs');
-    inputs.forEach(function (input) {
-        if (!input.value) {
-            formIsValid = false;
-        }
-    });
-    var textarea = document.querySelectorAll('#formAddEditSave_UMS textarea');
-    textarea.forEach(function (input) {
-        if (!input.value) {
-            formIsValid = false;
-        }
-    });
-    var select = document.querySelectorAll('#formAddEditSave_UMS select');
-    select.forEach(function (input) {
-        if (!input.value) {
-            formIsValid = false;
-        }
-    });
-    // Return validation result
-    return formIsValid;
-}
-var duplicateDivs = document.querySelectorAll('.modal-backdrop.fade.show');
-
-// Remove duplicate elements except the first one
-for (var i = 1; i < duplicateDivs.length; i++) {
-    duplicateDivs[i].parentNode.removeChild(duplicateDivs[i]);
-}
-$(document).ready(function () {
-    // Remove duplicate elements except the first one
-    $('.modal-backdrop.fade.show:gt(0)').remove();
-    $(".t-tab").click(function () {
-        $(".t-tab").removeClass("active");
-        $(this).addClass("active");
-
-    });
-});
-(function () {
-    'use strict'
-
-    var forms = document.querySelectorAll('.needs-validation')
-
-    Array.prototype.slice.call(forms)
-        .forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-
-                form.classList.add('was-validated')
-            }, false)
-        })
-})()
 $(function () {
-    // Add hover-triggered dropdown behavior
-    $('.dropdown').hover(function () {
-        var $dropdownMenu = $(this).find('.dropdown-menu');
-        if ($dropdownMenu.length === 0) {
-            console.log("Dropdown menu not found");
-            return;
-        }
+	$(".BorrowerCmbo").change(function () {
+		
+		$('#submit').click();
 
-        $dropdownMenu.addClass('show');
-        // Adjust position if menu extends beyond viewport
-        var dropdownMenuRect = $dropdownMenu[0].getBoundingClientRect();
-        var windowWidth = window.innerWidth;
-        var windowHeight = window.innerHeight;
+	});
+	$("#Paging").change(function () {
 
-        // Check if menu extends beyond the right of the viewport
-        if (dropdownMenuRect.right > windowWidth) {
-            $dropdownMenu.css('right', 0);
-            $dropdownMenu.css('left', 'auto');
-        }
-        // Check if menu extends beyond the bottom of the viewport
-        if (dropdownMenuRect.bottom > windowHeight) {
-            $dropdownMenu.css('top', 'auto');
-            $dropdownMenu.css('bottom', '100%');
-        }
-        // Check if menu extends beyond the top of the viewport
-        if (dropdownMenuRect.top < 0) {
-            $dropdownMenu.css('top', '100%');
-            $dropdownMenu.css('bottom', 'auto');
-        }
-    }, function () {
-        $(this).find('.dropdown-menu').removeClass('show');
-    });
+		$('#filterFormlistp').submit();
 
-    // Close dropdown when clicked outside
-    $(document).on('click', function (e) {
-        if (!$(e.target).closest('.dropdown').length) {
-            $('.dropdown-menu').removeClass('show');
-        }
-    });
+	});
+	$("#getSearchInput").keyup(function () {
+		$('#SearchInput').val(this.value.trim());
+		console.log($('#SearchInput').val());
+		$('#submit').click();
 
-    $('#staticBackdrop').modal('show');
-    $(".t-tab").click(function () {
-        $('#requeststatus').val(this.value);
-        $('.exerequeststatus').val(this.value);
-        $('#submit').click();
-
-    });
-    $(".request-type-btn").click(function () {
-        $('#requesttypebtn').val(this.value);
-        $('#exerequesttypebtn').val(this.value);
-        $('.t-tab.active').click();
-
-    });
-    $(".regionDashboard").change(function () {
-        $('#requestRegionId').val(this.value);
-        $('#exerequestRegionId').val(this.value);
-        $('.t-tab.active').click();
-
-    });
-    $("#getSearchInput").keyup(function () {
-        $('#SearchInput').val(this.value.trim());
-        $('#exeSearchInput').val(this.value.trim());
-        console.log($('#SearchInput').val());
-        $('.t-tab.active').click();
-
-    });
-    $("form").on("change", ".file-upload-field", function () {
-        $(this).parent(".file-upload-wrapper").attr("data-text", $(this).val().replace(/.*(\/|\\)/, ''));
-    });
-    $("form").on("change", ".file-upload-field1", function () {
-        $(this).parent(".file-upload-wrapper").attr("data-text", $(this).val().replace(/.*(\/|\\)/, ''));
-    });
- 
-    $(".toggle--open").on("click", function () {
-        $("#navlist").attr("data-hidden", "false");
-        $(this).attr("aria-expanded", "true");
-    });
-
-    $(".toggle--close").on("click", function () {
-        $("#navlist").attr("data-hidden", "true");
-        $(".toggle--open").attr("aria-expanded", "false");
-    });
-
+	});
 });
+function page() {
 
+	$('#filterFormlistpbtn').click();
 
-var buttons = document.querySelectorAll('.request-type-btn');
-
-// Add click event listeners to each button
-buttons.forEach(function (button) {
-    button.addEventListener('click', function () {
-        // Remove 'active' class from all buttons
-        buttons.forEach(function (btn) {
-            btn.classList.remove('active');
-        });
-
-        // Add 'active' class to the clicked button
-        button.classList.add('active');
-    });
-});
-
-function oops(title) {
-    Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: title
-    });
-}
-function cancelalt(title) {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        iconColor: 'black',
-        customClass: {
-            popup: 'colored-toast-cancel',
-        },
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        }
-    });
-    Toast.fire({
-        icon: "danger",
-        title: title
-    });
-}
-
-
-function savealt(title) {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        iconColor: 'black',
-        customClass: {
-            popup: 'colored-toast',
-        },
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        }
-    });
-    Toast.fire({
-        icon: "success",
-        title: title
-    });
-}
-document.addEventListener("DOMContentLoaded", function () {
-    const phoneInputFieldphone = document.querySelector("#phone");
-    const phoneInput = window.intlTelInput(phoneInputFieldphone, {
-        separateDialCode: true,
-        hiddenInput: "country_code",
-        preferredCountries: ["us", "co", "in", "de"],
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    });
-
-    // Trigger the input event to format the phone number initially
-    phoneInputFieldphone.dispatchEvent(new Event('input'));
-
-    phoneInputFieldphone.addEventListener("input", function () {
-        // Get the formatted phone number
-        const formattedNumber = phoneInput.getNumber();
-        // Update the input field value with the formatted number
-        document.getElementById("phone").value = formattedNumber;
-    });
-   
-
-const phoneInputField1 = document.querySelector("#phone1");
-const phoneInput1 = window.intlTelInput(phoneInputField1, {
-    separateDialCode: true,
-    hiddenInput: "country_code",
-    preferredCountries: ["us", "co", "in", "de"],
-    utilsScript:
-        "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-});
-
-phoneInputField1.addEventListener("input", function () {
-    const formattedNumber = phoneInput1.getNumber();
-    // Update the input field value with the formatted number
-    document.getElementById("phone1").value = formattedNumber;
-
-});
-    function dispatchInputEvent() {
-        phoneInputFieldphone.dispatchEvent(new Event('input'));
-        phoneInputField1.dispatchEvent(new Event('input'));
-    }
-
-    var delayMilliseconds = 100;
-
-    setTimeout(dispatchInputEvent, delayMilliseconds);
-});
-function getLocation() {
-    const x = document.getElementById("map");
-
-    if (navigator.geolocation) {
-        console.log(51);
-        navigator.geolocation.watchPosition(showPosition);
-        console.log(51545);
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
-
-function showPosition(position) {
-
-    const x = document.getElementById("map");
-    x.innerHTML = "Latitude: " + position.coords.latitude +
-        "<br>Longitude: " + position.coords.longitude;
-    document.getElementById("latitude").value = position.coords.latitude;
-    document.getElementById("longitude").value = position.coords.longitude;
-}
-
-
-const phoneInputField11 = document.querySelector("#phone11");
-const phoneInput11 = window.intlTelInput(phoneInputField11, {
-    separateDialCode: true,
-    hiddenInput: "full",
-    preferredCountries: ["us", "co", "in", "de"],
-    utilsScript:
-        "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-});
-
-function CheckPassword(inputtxt) {
-    var decimal = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
-    var submitButton = inputtxt.closest('form').querySelector('input[type="submit"]');
-    if (!inputtxt.value.match(decimal)) {
-        $("#perror").show();
-        submitButton.disabled = true;
-        return true;
-    }
-    else {
-        $("#perror").hide();
-        submitButton.disabled = false;
-        return false;
-    }
-} 
-
-function passtoggle(x) {
-    var parentDiv = x.closest('.password-hide, .password');
-    var passwordInput = parentDiv.querySelector('.password-input');
-    var showEyes = parentDiv.querySelectorAll('.bi-eye');
-    var hideEyes = parentDiv.querySelectorAll('.bi-eye-slash');
-
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        showEyes.forEach(i => i.style.display = "none");
-        hideEyes.forEach(i => i.style.display = "block");
-    } else {
-        passwordInput.type = "password";
-        hideEyes.forEach(i => i.style.display = "none");
-        showEyes.forEach(i => i.style.display = "block");
-    }
-}
+};
+var city = [
+	'Kolhapur',
+	'Port Blair',
+	'Adilabad',
+	'Adoni',
+	'Amadalavalasa',
+	'Amalapuram',
+	'Anakapalle',
+	'Anantapur',
+	'Badepalle',
+	'Banganapalle',
+	'Bapatla',
+	'Bellampalle',
+	'Bethamcherla',
+	'Bhadrachalam',
+	'Bhainsa',
+	'Bheemunipatnam',
+	'Bhimavaram',
+	'Bhongir',
+	'Bobbili',
+	'Bodhan',
+	'Chilakaluripet',
+	'Chirala',
+	'Chittoor',
+	'Cuddapah',
+	'Devarakonda',
+	'Dharmavaram',
+	'Eluru',
+	'Farooqnagar',
+	'Gadwal',
+	'Gooty',
+	'Gudivada',
+	'Gudur',
+	'Guntakal',
+	'Guntur',
+	'Hanuman Junction',
+	'Hindupur',
+	'Hyderabad',
+	'Ichchapuram',
+	'Jaggaiahpet',
+	'Jagtial',
+	'Jammalamadugu',
+	'Jangaon',
+	'Kadapa',
+	'Kadiri',
+	'Kagaznagar',
+	'Kakinada',
+	'Kalyandurg',
+	'Kamareddy',
+	'Kandukur',
+	'Karimnagar',
+	'Kavali',
+	'Khammam',
+	'Koratla',
+	'Kothagudem',
+	'Kothapeta',
+	'Kovvur',
+	'Kurnool',
+	'Kyathampalle',
+	'Macherla',
+	'Machilipatnam',
+	'Madanapalle',
+	'Mahbubnagar',
+	'Mancherial',
+	'Mandamarri',
+	'Mandapeta',
+	'Manuguru',
+	'Markapur',
+	'Medak',
+	'Miryalaguda',
+	'Mogalthur',
+	'Nagari',
+	'Nagarkurnool',
+	'Nandyal',
+	'Narasapur',
+	'Narasaraopet',
+	'Narayanpet',
+	'Narsipatnam',
+	'Nellore',
+	'Nidadavole',
+	'Nirmal',
+	'Nizamabad',
+	'Nuzvid',
+	'Ongole',
+	'Palacole',
+	'Palasa Kasibugga',
+	'Palwancha',
+	'Parvathipuram',
+	'Pedana',
+	'Peddapuram',
+	'Pithapuram',
+	'Pondur',
+	'Ponnur',
+	'Proddatur',
+	'Punganur',
+	'Puttur',
+	'Rajahmundry',
+	'Rajam',
+	'Ramachandrapuram',
+	'Ramagundam',
+	'Rayachoti',
+	'Rayadurg',
+	'Renigunta',
+	'Repalle',
+	'Sadasivpet',
+	'Salur',
+	'Samalkot',
+	'Sangareddy',
+	'Sattenapalle',
+	'Siddipet',
+	'Singapur',
+	'Sircilla',
+	'Srikakulam',
+	'Srikalahasti',
+	'Suryapet',
+	'Tadepalligudem',
+	'Tadpatri',
+	'Tandur',
+	'Tanuku',
+	'Tenali',
+	'Tirupati',
+	'Tuni',
+	'Uravakonda',
+	'Venkatagiri',
+	'Vicarabad',
+	'Vijayawada',
+	'Vinukonda',
+	'Visakhapatnam',
+	'Vizianagaram',
+	'Wanaparthy',
+	'Warangal',
+	'Yellandu',
+	'Yemmiganur',
+	'Yerraguntla',
+	'Zahirabad',
+	'Rajampet',
+	'Along',
+	'Bomdila',
+	'Itanagar',
+	'Naharlagun',
+	'Pasighat',
+	'Abhayapuri',
+	'Amguri',
+	'Anandnagaar',
+	'Barpeta',
+	'Barpeta Road',
+	'Bilasipara',
+	'Bongaigaon',
+	'Dhekiajuli',
+	'Dhubri',
+	'Dibrugarh',
+	'Digboi',
+	'Diphu',
+	'Dispur',
+	'Gauripur',
+	'Goalpara',
+	'Golaghat',
+	'Guwahati',
+	'Haflong',
+	'Hailakandi',
+	'Hojai',
+	'Jorhat',
+	'Karimganj',
+	'Kokrajhar',
+	'Lanka',
+	'Lumding',
+	'Mangaldoi',
+	'Mankachar',
+	'Margherita',
+	'Mariani',
+	'Marigaon',
+	'Nagaon',
+	'Nalbari',
+	'North Lakhimpur',
+	'Rangia',
+	'Sibsagar',
+	'Silapathar',
+	'Silchar',
+	'Tezpur',
+	'Tinsukia',
+	'Amarpur',
+	'Araria',
+	'Areraj',
+	'Arrah',
+	'Asarganj',
+	'Aurangabad',
+	'Bagaha',
+	'Bahadurganj',
+	'Bairgania',
+	'Bakhtiarpur',
+	'Banka',
+	'Banmankhi Bazar',
+	'Barahiya',
+	'Barauli',
+	'Barbigha',
+	'Barh',
+	'Begusarai',
+	'Behea',
+	'Bettiah',
+	'Bhabua',
+	'Bhagalpur',
+	'Bihar Sharif',
+	'Bikramganj',
+	'Bodh Gaya',
+	'Buxar',
+	'Chandan Bara',
+	'Chanpatia',
+	'Chhapra',
+	'Colgong',
+	'Dalsinghsarai',
+	'Darbhanga',
+	'Daudnagar',
+	'Dehri-on-Sone',
+	'Dhaka',
+	'Dighwara',
+	'Dumraon',
+	'Fatwah',
+	'Forbesganj',
+	'Gaya',
+	'Gogri Jamalpur',
+	'Gopalganj',
+	'Hajipur',
+	'Hilsa',
+	'Hisua',
+	'Islampur',
+	'Jagdispur',
+	'Jamalpur',
+	'Jamui',
+	'Jehanabad',
+	'Jhajha',
+	'Jhanjharpur',
+	'Jogabani',
+	'Kanti',
+	'Katihar',
+	'Khagaria',
+	'Kharagpur',
+	'Kishanganj',
+	'Lakhisarai',
+	'Lalganj',
+	'Madhepura',
+	'Madhubani',
+	'Maharajganj',
+	'Mahnar Bazar',
+	'Makhdumpur',
+	'Maner',
+	'Manihari',
+	'Marhaura',
+	'Masaurhi',
+	'Mirganj',
+	'Mokameh',
+	'Motihari',
+	'Motipur',
+	'Munger',
+	'Murliganj',
+	'Muzaffarpur',
+	'Narkatiaganj',
+	'Naugachhia',
+	'Nawada',
+	'Nokha',
+	'Patna',
+	'Piro',
+	'Purnia',
+	'Rafiganj',
+	'Rajgir',
+	'Ramnagar',
+	'Raxaul Bazar',
+	'Revelganj',
+	'Rosera',
+	'Saharsa',
+	'Samastipur',
+	'Sasaram',
+	'Sheikhpura',
+	'Sheohar',
+	'Sherghati',
+	'Silao',
+	'Sitamarhi',
+	'Siwan',
+	'Sonepur',
+	'Sugauli',
+	'Sultanganj',
+	'Supaul',
+	'Warisaliganj',
+	'Ahiwara',
+	'Akaltara',
+	'Ambagarh Chowki',
+	'Ambikapur',
+	'Arang',
+	'Bade Bacheli',
+	'Balod',
+	'Baloda Bazar',
+	'Bemetra',
+	'Bhatapara',
+	'Bilaspur',
+	'Birgaon',
+	'Champa',
+	'Chirmiri',
+	'Dalli-Rajhara',
+	'Dhamtari',
+	'Dipka',
+	'Dongargarh',
+	'Durg-Bhilai Nagar',
+	'Gobranawapara',
+	'Jagdalpur',
+	'Janjgir',
+	'Jashpurnagar',
+	'Kanker',
+	'Kawardha',
+	'Kondagaon',
+	'Korba',
+	'Mahasamund',
+	'Mahendragarh',
+	'Mungeli',
+	'Naila Janjgir',
+	'Raigarh',
+	'Raipur',
+	'Rajnandgaon',
+	'Sakti',
+	'Tilda Newra',
+	'Amli',
+	'Silvassa',
+	'Daman and Diu',
+	'Asola',
+	'Delhi',
+	'Aldona',
+	'Curchorem Cacora',
+	'Madgaon',
+	'Mapusa',
+	'Margao',
+	'Marmagao',
+	'Panaji',
+	'Ahmedabad',
+	'Amreli',
+	'Anand',
+	'Ankleshwar',
+	'Bharuch',
+	'Bhavnagar',
+	'Bhuj',
+	'Cambay',
+	'Dahod',
+	'Deesa',
+	'Dharampur',
+	'Dholka',
+	'Gandhinagar',
+	'Godhra',
+	'Himatnagar',
+	'Idar',
+	'Jamnagar',
+	'Junagadh',
+	'Kadi',
+	'Kalavad',
+	'Kalol',
+	'Kapadvanj',
+	'Karjan',
+	'Keshod',
+	'Khambhalia',
+	'Khambhat',
+	'Kheda',
+	'Khedbrahma',
+	'Kheralu',
+	'Kodinar',
+	'Lathi',
+	'Limbdi',
+	'Lunawada',
+	'Mahesana',
+	'Mahuva',
+	'Manavadar',
+	'Mandvi',
+	'Mangrol',
+	'Mansa',
+	'Mehmedabad',
+	'Modasa',
+	'Morvi',
+	'Nadiad',
+	'Navsari',
+	'Padra',
+	'Palanpur',
+	'Palitana',
+	'Pardi',
+	'Patan',
+	'Petlad',
+	'Porbandar',
+	'Radhanpur',
+	'Rajkot',
+	'Rajpipla',
+	'Rajula',
+	'Ranavav',
+	'Rapar',
+	'Salaya',
+	'Sanand',
+	'Savarkundla',
+	'Sidhpur',
+	'Sihor',
+	'Songadh',
+	'Surat',
+	'Talaja',
+	'Thangadh',
+	'Tharad',
+	'Umbergaon',
+	'Umreth',
+	'Una',
+	'Unjha',
+	'Upleta',
+	'Vadnagar',
+	'Vadodara',
+	'Valsad',
+	'Vapi',
+	'Veraval',
+	'Vijapur',
+	'Viramgam',
+	'Visnagar',
+	'Vyara',
+	'Wadhwan',
+	'Wankaner',
+	'Adalaj',
+	'Adityana',
+	'Alang',
+	'Ambaji',
+	'Ambaliyasan',
+	'Andada',
+	'Anjar',
+	'Anklav',
+	'Antaliya',
+	'Arambhada',
+	'Atul',
+	'Ballabhgarh',
+	'Ambala',
+	'Asankhurd',
+	'Assandh',
+	'Ateli',
+	'Babiyal',
+	'Bahadurgarh',
+	'Barwala',
+	'Bhiwani',
+	'Charkhi Dadri',
+	'Cheeka',
+	'Ellenabad 2',
+	'Faridabad',
+	'Fatehabad',
+	'Ganaur',
+	'Gharaunda',
+	'Gohana',
+	'Gurgaon',
+	'Haibat(Yamuna Nagar)',
+	'Hansi',
+	'Hisar',
+	'Hodal',
+	'Jhajjar',
+	'Jind',
+	'Kaithal',
+	'Kalan Wali',
+	'Kalka',
+	'Karnal',
+	'Ladwa',
+	'Mandi Dabwali',
+	'Narnaul',
+	'Narwana',
+	'Palwal',
+	'Panchkula',
+	'Panipat',
+	'Pehowa',
+	'Pinjore',
+	'Rania',
+	'Ratia',
+	'Rewari',
+	'Rohtak',
+	'Safidon',
+	'Samalkha',
+	'Shahbad',
+	'Sirsa',
+	'Sohna',
+	'Sonipat',
+	'Taraori',
+	'Thanesar',
+	'Tohana',
+	'Yamunanagar',
+	'Arki',
+	'Baddi',
+	'Bilaspur',
+	'Chamba',
+	'Dalhousie',
+	'Dharamsala',
+	'Hamirpur',
+	'Mandi',
+	'Nahan',
+	'Shimla',
+	'Solan',
+	'Sundarnagar',
+	'Jammu',
+	'Achabbal',
+	'Akhnoor',
+	'Anantnag',
+	'Arnia',
+	'Awantipora',
+	'Bandipore',
+	'Baramula',
+	'Kathua',
+	'Leh',
+	'Punch',
+	'Rajauri',
+	'Sopore',
+	'Srinagar',
+	'Udhampur',
+	'Amlabad',
+	'Ara',
+	'Barughutu',
+	'Bokaro Steel City',
+	'Chaibasa',
+	'Chakradharpur',
+	'Chandrapura',
+	'Chatra',
+	'Chirkunda',
+	'Churi',
+	'Daltonganj',
+	'Deoghar',
+	'Dhanbad',
+	'Dumka',
+	'Garhwa',
+	'Ghatshila',
+	'Giridih',
+	'Godda',
+	'Gomoh',
+	'Gumia',
+	'Gumla',
+	'Hazaribag',
+	'Hussainabad',
+	'Jamshedpur',
+	'Jamtara',
+	'Jhumri Tilaiya',
+	'Khunti',
+	'Lohardaga',
+	'Madhupur',
+	'Mihijam',
+	'Musabani',
+	'Pakaur',
+	'Patratu',
+	'Phusro',
+	'Ramngarh',
+	'Ranchi',
+	'Sahibganj',
+	'Saunda',
+	'Simdega',
+	'Tenu Dam-cum- Kathhara',
+	'Arasikere',
+	'Bangalore',
+	'Belgaum',
+	'Bellary',
+	'Chamrajnagar',
+	'Chikkaballapur',
+	'Chintamani',
+	'Chitradurga',
+	'Gulbarga',
+	'Gundlupet',
+	'Hassan',
+	'Hospet',
+	'Hubli',
+	'Karkala',
+	'Karwar',
+	'Kolar',
+	'Kota',
+	'Lakshmeshwar',
+	'Lingsugur',
+	'Maddur',
+	'Madhugiri',
+	'Madikeri',
+	'Magadi',
+	'Mahalingpur',
+	'Malavalli',
+	'Malur',
+	'Mandya',
+	'Mangalore',
+	'Manvi',
+	'Mudalgi',
+	'Mudbidri',
+	'Muddebihal',
+	'Mudhol',
+	'Mulbagal',
+	'Mundargi',
+	'Mysore',
+	'Nanjangud',
+	'Pavagada',
+	'Puttur',
+	'Rabkavi Banhatti',
+	'Raichur',
+	'Ramanagaram',
+	'Ramdurg',
+	'Ranibennur',
+	'Robertson Pet',
+	'Ron',
+	'Sadalgi',
+	'Sagar',
+	'Sakleshpur',
+	'Sandur',
+	'Sankeshwar',
+	'Saundatti-Yellamma',
+	'Savanur',
+	'Sedam',
+	'Shahabad',
+	'Shahpur',
+	'Shiggaon',
+	'Shikapur',
+	'Shimoga',
+	'Shorapur',
+	'Shrirangapattana',
+	'Sidlaghatta',
+	'Sindgi',
+	'Sindhnur',
+	'Sira',
+	'Sirsi',
+	'Siruguppa',
+	'Srinivaspur',
+	'Talikota',
+	'Tarikere',
+	'Tekkalakota',
+	'Terdal',
+	'Tiptur',
+	'Tumkur',
+	'Udupi',
+	'Vijayapura',
+	'Wadi',
+	'Yadgir',
+	'Adoor',
+	'Akathiyoor',
+	'Alappuzha',
+	'Ancharakandy',
+	'Aroor',
+	'Ashtamichira',
+	'Attingal',
+	'Avinissery',
+	'Chalakudy',
+	'Changanassery',
+	'Chendamangalam',
+	'Chengannur',
+	'Cherthala',
+	'Cheruthazham',
+	'Chittur-Thathamangalam',
+	'Chockli',
+	'Erattupetta',
+	'Guruvayoor',
+	'Irinjalakuda',
+	'Kadirur',
+	'Kalliasseri',
+	'Kalpetta',
+	'Kanhangad',
+	'Kanjikkuzhi',
+	'Kannur',
+	'Kasaragod',
+	'Kayamkulam',
+	'Kochi',
+	'Kodungallur',
+	'Kollam',
+	'Koothuparamba',
+	'Kothamangalam',
+	'Kottayam',
+	'Kozhikode',
+	'Kunnamkulam',
+	'Malappuram',
+	'Mattannur',
+	'Mavelikkara',
+	'Mavoor',
+	'Muvattupuzha',
+	'Nedumangad',
+	'Neyyattinkara',
+	'Ottappalam',
+	'Palai',
+	'Palakkad',
+	'Panniyannur',
+	'Pappinisseri',
+	'Paravoor',
+	'Pathanamthitta',
+	'Payyannur',
+	'Peringathur',
+	'Perinthalmanna',
+	'Perumbavoor',
+	'Ponnani',
+	'Punalur',
+	'Quilandy',
+	'Shoranur',
+	'Taliparamba',
+	'Thiruvalla',
+	'Thiruvananthapuram',
+	'Thodupuzha',
+	'Thrissur',
+	'Tirur',
+	'Vadakara',
+	'Vaikom',
+	'Varkala',
+	'Kavaratti',
+	'Ashok Nagar',
+	'Balaghat',
+	'Betul',
+	'Bhopal',
+	'Burhanpur',
+	'Chhatarpur',
+	'Dabra',
+	'Datia',
+	'Dewas',
+	'Dhar',
+	'Fatehabad',
+	'Gwalior',
+	'Indore',
+	'Itarsi',
+	'Jabalpur',
+	'Katni',
+	'Kotma',
+	'Lahar',
+	'Lundi',
+	'Maharajpur',
+	'Mahidpur',
+	'Maihar',
+	'Malajkhand',
+	'Manasa',
+	'Manawar',
+	'Mandideep',
+	'Mandla',
+	'Mandsaur',
+	'Mauganj',
+	'Mhow Cantonment',
+	'Mhowgaon',
+	'Morena',
+	'Multai',
+	'Murwara',
+	'Nagda',
+	'Nainpur',
+	'Narsinghgarh',
+	'Neemuch',
+	'Nepanagar',
+	'Niwari',
+	'Nowgong',
+	'Nowrozabad',
+	'Pachore',
+	'Pali',
+	'Panagar',
+	'Pandhurna',
+	'Panna',
+	'Pasan',
+	'Pipariya',
+	'Pithampur',
+	'Porsa',
+	'Prithvipur',
+	'Raghogarh-Vijaypur',
+	'Rahatgarh',
+	'Raisen',
+	'Rajgarh',
+	'Ratlam',
+	'Rau',
+	'Rehli',
+	'Rewa',
+	'Sabalgarh',
+	'Sagar',
+	'Sanawad',
+	'Sarangpur',
+	'Sarni',
+	'Satna',
+	'Sausar',
+	'Sehore',
+	'Sendhwa',
+	'Seoni',
+	'Seoni-Malwa',
+	'Shahdol',
+	'Shajapur',
+	'Shamgarh',
+	'Sheopur',
+	'Shivpuri',
+	'Shujalpur',
+	'Sidhi',
+	'Sihora',
+	'Singrauli',
+	'Sironj',
+	'Sohagpur',
+	'Tarana',
+	'Tikamgarh',
+	'Ujhani',
+	'Ujjain',
+	'Umaria',
+	'Vidisha',
+	'Wara Seoni',
+	'Ahmednagar',
+	'Akola',
+	'Amravati',
+	'Aurangabad',
+	'Baramati',
+	'Chalisgaon',
+	'Chinchani',
+	'Devgarh',
+	'Dhule',
+	'Dombivli',
+	'Durgapur',
+	'Ichalkaranji',
+	'Jalna',
+	'Kalyan',
+	'Latur',
+	'Loha',
+	'Lonar',
+	'Lonavla',
+	'Mahad',
+	'Mahuli',
+	'Malegaon',
+	'Malkapur',
+	'Manchar',
+	'Mangalvedhe',
+	'Mangrulpir',
+	'Manjlegaon',
+	'Manmad',
+	'Manwath',
+	'Mehkar',
+	'Mhaswad',
+	'Miraj',
+	'Morshi',
+	'Mukhed',
+	'Mul',
+	'Mumbai',
+	'Murtijapur',
+	'Nagpur',
+	'Nalasopara',
+	'Nanded-Waghala',
+	'Nandgaon',
+	'Nandura',
+	'Nandurbar',
+	'Narkhed',
+	'Nashik',
+	'Navi Mumbai',
+	'Nawapur',
+	'Nilanga',
+	'Osmanabad',
+	'Ozar',
+	'Pachora',
+	'Paithan',
+	'Palghar',
+	'Pandharkaoda',
+	'Pandharpur',
+	'Panvel',
+	'Parbhani',
+	'Parli',
+	'Parola',
+	'Partur',
+	'Pathardi',
+	'Pathri',
+	'Patur',
+	'Pauni',
+	'Pen',
+	'Phaltan',
+	'Pulgaon',
+	'Pune',
+	'Purna',
+	'Pusad',
+	'Rahuri',
+	'Rajura',
+	'Ramtek',
+	'Ratnagiri',
+	'Raver',
+	'Risod',
+	'Sailu',
+	'Sangamner',
+	'Sangli',
+	'Sangole',
+	'Sasvad',
+	'Satana',
+	'Satara',
+	'Savner',
+	'Sawantwadi',
+	'Shahade',
+	'Shegaon',
+	'Shendurjana',
+	'Shirdi',
+	'Shirpur-Warwade',
+	'Shirur',
+	'Shrigonda',
+	'Shrirampur',
+	'Sillod',
+	'Sinnar',
+	'Solapur',
+	'Soyagaon',
+	'Talegaon Dabhade',
+	'Talode',
+	'Tasgaon',
+	'Tirora',
+	'Tuljapur',
+	'Tumsar',
+	'Uran',
+	'Uran Islampur',
+	'Wadgaon Road',
+	'Wai',
+	'Wani',
+	'Wardha',
+	'Warora',
+	'Warud',
+	'Washim',
+	'Yevla',
+	'Uchgaon',
+	'Udgir',
+	'Umarga',
+	'Umarkhed',
+	'Umred',
+	'Vadgaon Kasba',
+	'Vaijapur',
+	'Vasai',
+	'Virar',
+	'Vita',
+	'Yavatmal',
+	'Yawal',
+	'Imphal',
+	'Kakching',
+	'Lilong',
+	'Mayang Imphal',
+	'Thoubal',
+	'Jowai',
+	'Nongstoin',
+	'Shillong',
+	'Tura',
+	'Aizawl',
+	'Champhai',
+	'Lunglei',
+	'Saiha',
+	'Dimapur',
+	'Kohima',
+	'Mokokchung',
+	'Tuensang',
+	'Wokha',
+	'Zunheboto',
+	'Anandapur',
+	'Anugul',
+	'Asika',
+	'Balangir',
+	'Balasore',
+	'Baleshwar',
+	'Bamra',
+	'Barbil',
+	'Bargarh',
+	'Baripada',
+	'Basudebpur',
+	'Belpahar',
+	'Bhadrak',
+	'Bhawanipatna',
+	'Bhuban',
+	'Bhubaneswar',
+	'Biramitrapur',
+	'Brahmapur',
+	'Brajrajnagar',
+	'Byasanagar',
+	'Cuttack',
+	'Debagarh',
+	'Dhenkanal',
+	'Gunupur',
+	'Hinjilicut',
+	'Jagatsinghapur',
+	'Jajapur',
+	'Jaleswar',
+	'Jatani',
+	'Jeypur',
+	'Jharsuguda',
+	'Joda',
+	'Kantabanji',
+	'Karanjia',
+	'Kendrapara',
+	'Kendujhar',
+	'Khordha',
+	'Koraput',
+	'Malkangiri',
+	'Nabarangapur',
+	'Paradip',
+	'Parlakhemundi',
+	'Pattamundai',
+	'Phulabani',
+	'Puri',
+	'Rairangpur',
+	'Rajagangapur',
+	'Raurkela',
+	'Rayagada',
+	'Sambalpur',
+	'Soro',
+	'Sunabeda',
+	'Sundargarh',
+	'Talcher',
+	'Titlagarh',
+	'Umarkote',
+	'Karaikal',
+	'Mahe',
+	'Pondicherry',
+	'Yanam',
+	'Ahmedgarh',
+	'Amritsar',
+	'Barnala',
+	'Batala',
+	'Bathinda',
+	'Bhagha Purana',
+	'Budhlada',
+	'Chandigarh',
+	'Dasua',
+	'Dhuri',
+	'Dinanagar',
+	'Faridkot',
+	'Fazilka',
+	'Firozpur',
+	'Firozpur Cantt.',
+	'Giddarbaha',
+	'Gobindgarh',
+	'Gurdaspur',
+	'Hoshiarpur',
+	'Jagraon',
+	'Jaitu',
+	'Jalalabad',
+	'Jalandhar',
+	'Jalandhar Cantt.',
+	'Jandiala',
+	'Kapurthala',
+	'Karoran',
+	'Kartarpur',
+	'Khanna',
+	'Kharar',
+	'Kot Kapura',
+	'Kurali',
+	'Longowal',
+	'Ludhiana',
+	'Malerkotla',
+	'Malout',
+	'Mansa',
+	'Maur',
+	'Moga',
+	'Mohali',
+	'Morinda',
+	'Mukerian',
+	'Muktsar',
+	'Nabha',
+	'Nakodar',
+	'Nangal',
+	'Nawanshahr',
+	'Pathankot',
+	'Patiala',
+	'Patran',
+	'Patti',
+	'Phagwara',
+	'Phillaur',
+	'Qadian',
+	'Raikot',
+	'Rajpura',
+	'Rampura Phul',
+	'Rupnagar',
+	'Samana',
+	'Sangrur',
+	'Sirhind Fatehgarh Sahib',
+	'Sujanpur',
+	'Sunam',
+	'Talwara',
+	'Tarn Taran',
+	'Urmar Tanda',
+	'Zira',
+	'Zirakpur',
+	'Bali',
+	'Banswara',
+	'Ajmer',
+	'Alwar',
+	'Bandikui',
+	'Baran',
+	'Barmer',
+	'Bikaner',
+	'Fatehpur',
+	'Jaipur',
+	'Jaisalmer',
+	'Jodhpur',
+	'Kota',
+	'Lachhmangarh',
+	'Ladnu',
+	'Lakheri',
+	'Lalsot',
+	'Losal',
+	'Makrana',
+	'Malpura',
+	'Mandalgarh',
+	'Mandawa',
+	'Mangrol',
+	'Merta City',
+	'Mount Abu',
+	'Nadbai',
+	'Nagar',
+	'Nagaur',
+	'Nargund',
+	'Nasirabad',
+	'Nathdwara',
+	'Navalgund',
+	'Nawalgarh',
+	'Neem-Ka-Thana',
+	'Nelamangala',
+	'Nimbahera',
+	'Nipani',
+	'Niwai',
+	'Nohar',
+	'Nokha',
+	'Pali',
+	'Phalodi',
+	'Phulera',
+	'Pilani',
+	'Pilibanga',
+	'Pindwara',
+	'Pipar City',
+	'Prantij',
+	'Pratapgarh',
+	'Raisinghnagar',
+	'Rajakhera',
+	'Rajaldesar',
+	'Rajgarh (Alwar)',
+	'Rajgarh (Churu',
+	'Rajsamand',
+	'Ramganj Mandi',
+	'Ramngarh',
+	'Ratangarh',
+	'Rawatbhata',
+	'Rawatsar',
+	'Reengus',
+	'Sadri',
+	'Sadulshahar',
+	'Sagwara',
+	'Sambhar',
+	'Sanchore',
+	'Sangaria',
+	'Sardarshahar',
+	'Sawai Madhopur',
+	'Shahpura',
+	'Sheoganj',
+	'Sikar',
+	'Sirohi',
+	'Sojat',
+	'Sri Madhopur',
+	'Sujangarh',
+	'Sumerpur',
+	'Suratgarh',
+	'Taranagar',
+	'Todabhim',
+	'Todaraisingh',
+	'Tonk',
+	'Udaipur',
+	'Udaipurwati',
+	'Vijainagar',
+	'Gangtok',
+	'Calcutta',
+	'Arakkonam',
+	'Arcot',
+	'Aruppukkottai',
+	'Bhavani',
+	'Chengalpattu',
+	'Chennai',
+	'Chinna salem',
+	'Coimbatore',
+	'Coonoor',
+	'Cuddalore',
+	'Dharmapuri',
+	'Dindigul',
+	'Erode',
+	'Gudalur',
+	'Kanchipuram',
+	'Karaikudi',
+	'Karungal',
+	'Karur',
+	'Kollankodu',
+	'Lalgudi',
+	'Madurai',
+	'Nagapattinam',
+	'Nagercoil',
+	'Namagiripettai',
+	'Namakkal',
+	'Nandivaram-Guduvancheri',
+	'Nanjikottai',
+	'Natham',
+	'Nellikuppam',
+	'Neyveli',
+	'O Valley',
+	'Oddanchatram',
+	'P.N.Patti',
+	'Pacode',
+	'Padmanabhapuram',
+	'Palani',
+	'Palladam',
+	'Pallapatti',
+	'Pallikonda',
+	'Panagudi',
+	'Panruti',
+	'Paramakudi',
+	'Parangipettai',
+	'Pattukkottai',
+	'Perambalur',
+	'Peravurani',
+	'Periyakulam',
+	'Periyasemur',
+	'Pernampattu',
+	'Pollachi',
+	'Polur',
+	'Ponneri',
+	'Pudukkottai',
+	'Pudupattinam',
+	'Puliyankudi',
+	'Punjaipugalur',
+	'Rajapalayam',
+	'Ramanathapuram',
+	'Rameshwaram',
+	'Rasipuram',
+	'Salem',
+	'Sankarankoil',
+	'Sankari',
+	'Sathyamangalam',
+	'Sattur',
+	'Shenkottai',
+	'Sholavandan',
+	'Sholingur',
+	'Sirkali',
+	'Sivaganga',
+	'Sivagiri',
+	'Sivakasi',
+	'Srivilliputhur',
+	'Surandai',
+	'Suriyampalayam',
+	'Tenkasi',
+	'Thammampatti',
+	'Thanjavur',
+	'Tharamangalam',
+	'Tharangambadi',
+	'Theni Allinagaram',
+	'Thirumangalam',
+	'Thirunindravur',
+	'Thiruparappu',
+	'Thirupuvanam',
+	'Thiruthuraipoondi',
+	'Thiruvallur',
+	'Thiruvarur',
+	'Thoothukudi',
+	'Thuraiyur',
+	'Tindivanam',
+	'Tiruchendur',
+	'Tiruchengode',
+	'Tiruchirappalli',
+	'Tirukalukundram',
+	'Tirukkoyilur',
+	'Tirunelveli',
+	'Tirupathur',
+	'Tiruppur',
+	'Tiruttani',
+	'Tiruvannamalai',
+	'Tiruvethipuram',
+	'Tittakudi',
+	'Udhagamandalam',
+	'Udumalaipettai',
+	'Unnamalaikadai',
+	'Usilampatti',
+	'Uthamapalayam',
+	'Uthiramerur',
+	'Vadakkuvalliyur',
+	'Vadalur',
+	'Vadipatti',
+	'Valparai',
+	'Vandavasi',
+	'Vaniyambadi',
+	'Vedaranyam',
+	'Vellakoil',
+	'Vellore',
+	'Vikramasingapuram',
+	'Viluppuram',
+	'Virudhachalam',
+	'Virudhunagar',
+	'Viswanatham',
+	'Agartala',
+	'Badharghat',
+	'Dharmanagar',
+	'Indranagar',
+	'Jogendranagar',
+	'Kailasahar',
+	'Khowai',
+	'Pratapgarh',
+	'Udaipur',
+	'Achhnera',
+	'Adari',
+	'Agra',
+	'Aligarh',
+	'Allahabad',
+	'Amroha',
+	'Azamgarh',
+	'Bahraich',
+	'Ballia',
+	'Balrampur',
+	'Banda',
+	'Bareilly',
+	'Chandausi',
+	'Dadri',
+	'Deoria',
+	'Etawah',
+	'Fatehabad',
+	'Fatehpur',
+	'Greater Noida',
+	'Hamirpur',
+	'Hardoi',
+	'Jajmau',
+	'Jaunpur',
+	'Jhansi',
+	'Kalpi',
+	'Kanpur',
+	'Kota',
+	'Laharpur',
+	'Lakhimpur',
+	'Lal Gopalganj Nindaura',
+	'Lalganj',
+	'Lalitpur',
+	'Lar',
+	'Loni',
+	'Lucknow',
+	'Mathura',
+	'Meerut',
+	'Modinagar',
+	'Muradnagar',
+	'Nagina',
+	'Najibabad',
+	'Nakur',
+	'Nanpara',
+	'Naraura',
+	'Naugawan Sadat',
+	'Nautanwa',
+	'Nawabganj',
+	'Nehtaur',
+	'NOIDA',
+	'Noorpur',
+	'Obra',
+	'Orai',
+	'Padrauna',
+	'Palia Kalan',
+	'Parasi',
+	'Phulpur',
+	'Pihani',
+	'Pilibhit',
+	'Pilkhuwa',
+	'Powayan',
+	'Pukhrayan',
+	'Puranpur',
+	'Purquazi',
+	'Purwa',
+	'Rae Bareli',
+	'Rampur',
+	'Rampur Maniharan',
+	'Rasra',
+	'Rath',
+	'Renukoot',
+	'Reoti',
+	'Robertsganj',
+	'Rudauli',
+	'Rudrapur',
+	'Sadabad',
+	'Safipur',
+	'Saharanpur',
+	'Sahaspur',
+	'Sahaswan',
+	'Sahawar',
+	'Sahjanwa',
+	'Saidpur',
+	'Sambhal',
+	'Samdhan',
+	'Samthar',
+	'Sandi',
+	'Sandila',
+	'Sardhana',
+	'Seohara',
+	'Shahabad',
+	'Shahabad',
+	'Shahganj',
+	'Shahjahanpur',
+	'Shamli',
+	'Shamsabad',
+	'Shamsabad',
+	'Sherkot',
+	'Shikarpur',
+	'Shikohabad',
+	'Shishgarh',
+	'Siana',
+	'Sikanderpur',
+	'Sikandra Rao',
+	'Sikandrabad',
+	'Sirsaganj',
+	'Sirsi',
+	'Sitapur',
+	'Soron',
+	'Suar',
+	'Sultanpur',
+	'Sumerpur',
+	'Tanda',
+	'Tetri Bazar',
+	'Thakurdwara',
+	'Thana Bhawan',
+	'Tilhar',
+	'Tirwaganj',
+	'Tulsipur',
+	'Tundla',
+	'Unnao',
+	'Utraula',
+	'Varanasi',
+	'Vrindavan',
+	'Warhapur',
+	'Zaidpur',
+	'Zamania',
+	'Almora',
+	'Bazpur',
+	'Chamba',
+	'Dehradun',
+	'Haldwani',
+	'Haridwar',
+	'Jaspur',
+	'Kashipur',
+	'kichha',
+	'Kotdwara',
+	'Manglaur',
+	'Mussoorie',
+	'Nagla',
+	'Nainital',
+	'Pauri',
+	'Pithoragarh',
+	'Ramnagar',
+	'Rishikesh',
+	'Roorkee',
+	'Rudrapur',
+	'Sitarganj',
+	'Tehri',
+	'Muzaffarnagar',
+	'Adra',
+	'Alipurduar',
+	'Arambagh',
+	'Asansol',
+	'Baharampur',
+	'Bally',
+	'Balurghat',
+	'Bankura',
+	'Barakar',
+	'Barasat',
+	'Bardhaman',
+	'Bidhan Nagar',
+	'Chinsura',
+	'Contai',
+	'Cooch Behar',
+	'Darjeeling',
+	'Durgapur',
+	'Haldia',
+	'Howrah',
+	'Islampur',
+	'Jhargram',
+	'Kharagpur',
+	'Kolkata',
+	'Mainaguri',
+	'Mal',
+	'Mathabhanga',
+	'Medinipur',
+	'Memari',
+	'Monoharpur',
+	'Murshidabad',
+	'Nabadwip',
+	'Naihati',
+	'Panchla',
+	'Pandua',
+	'Paschim Punropara',
+	'Purulia',
+	'Raghunathpur',
+	'Raiganj',
+	'Rampurhat',
+	'Ranaghat',
+	'Sainthia',
+	'Santipur',
+	'Siliguri',
+	'Sonamukhi',
+	'Srirampore',
+	'Suri',
+	'Taki',
+	'Tamluk',
+	'Tarakeswar',
+	'Chikmagalur',
+	'Davanagere',
+	'Dharwad',
+	'Gadag',
+];

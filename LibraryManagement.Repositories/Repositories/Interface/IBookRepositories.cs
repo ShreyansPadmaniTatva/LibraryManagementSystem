@@ -15,6 +15,7 @@ namespace LibraryManagement.Repositories.Repositories.Interface
         Task<bool> EditBook(ViewBook vb);
         ViewBook GetBookById(int BookId);
         Task<bool> RemoveBook(int BookId);
+        Task<List<BrrowerComboBox>> ComboBoxBorrower();
 
     }
 }

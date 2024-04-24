@@ -18,9 +18,9 @@ namespace LibraryManagement.Controllers
         }
 
         #region Index
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-
+            ViewBag.ComboBoxBorrower = await  _bookRepositories.ComboBoxBorrower();
             return View();
         }
         #endregion
@@ -30,6 +30,8 @@ namespace LibraryManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> _SearchResultBook(BookModel bm)
         {
+            ViewBag.ComboBoxBorrower = _bookRepositories.ComboBoxBorrower();
+
             BookModel v = _bookRepositories.GetBooks(bm);
             return PartialView("_BookList", v);
         }
@@ -49,7 +51,7 @@ namespace LibraryManagement.Controllers
         }
 
 
-        #region _BookPost
+        #region _BookPostPut
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> _BookPost(ViewBook vb)
@@ -78,15 +80,6 @@ namespace LibraryManagement.Controllers
         }
 
 
-        #region _BookPost
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> _BookPut(ViewBook vb)
-        {
-            await _bookRepositories.AddBook(vb);
-            return RedirectToAction("Index");
-        }
-        #endregion
 
         #endregion
 
@@ -99,10 +92,12 @@ namespace LibraryManagement.Controllers
         }
         #endregion
 
+        #region Error
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        #endregion
     }
 }
