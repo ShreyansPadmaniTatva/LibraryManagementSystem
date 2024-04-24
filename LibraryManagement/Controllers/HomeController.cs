@@ -1,4 +1,6 @@
-﻿using LibraryManagement.Models;
+﻿using LibraryManagement.Entities.ViewModel;
+using LibraryManagement.Models;
+using LibraryManagement.Repositories.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,21 +9,95 @@ namespace LibraryManagement.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IBookRepositories _bookRepositories;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,IBookRepositories bookRepositories)
         {
             _logger = logger;
+            _bookRepositories = bookRepositories;
         }
 
+        #region Index
         public IActionResult Index()
         {
+
             return View();
+        }
+        #endregion
+
+        #region _SearchResult
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> _SearchResultBook(BookModel bm)
+        {
+            BookModel v = _bookRepositories.GetBooks(bm);
+            return PartialView("_BookList", v);
+        }
+        #endregion
+
+
+        #region _AddBook
+        public async Task<IActionResult> _AddBook(int? BookId )
+        {
+            if (BookId != null)
+            {
+                var v = _bookRepositories.GetBookById((int)BookId);
+                return PartialView(v);
+
+            }
+            return PartialView();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
+
+        #region _BookPost
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> _BookPost(ViewBook vb)
+        { 
+            if(vb.Bookid == null || vb.Bookid == 0)
+            {
+                await _bookRepositories.AddBook(vb);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                await _bookRepositories.EditBook(vb);
+                return RedirectToAction("Index");
+            }
+          
         }
+        #endregion
+
+        #endregion
+
+        #region _EditBook
+        public async Task<IActionResult> _EditBook()
+        {
+
+            return PartialView();
+        }
+
+
+        #region _BookPost
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> _BookPut(ViewBook vb)
+        {
+            await _bookRepositories.AddBook(vb);
+            return RedirectToAction("Index");
+        }
+        #endregion
+
+        #endregion
+
+        #region BookDelete
+        [HttpPost]
+        public async Task<IActionResult> BookDelete(int BookId)
+        {
+            await _bookRepositories.RemoveBook(BookId);
+            return RedirectToAction("Index");
+        }
+        #endregion
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

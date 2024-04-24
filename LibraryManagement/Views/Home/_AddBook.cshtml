@@ -1,0 +1,123 @@
+﻿@using static LibraryManagement.Entities.ViewModel.Constant;
+@model LibraryManagement.Entities.ViewModel.ViewBook ;
+@{
+    var GenereType = from Genere e in Enum.GetValues(typeof(Genere))
+                      select new
+                      {
+                          ID = (int)e,
+                          Name = e.ToString()
+                      };
+}
+<div class="modal-header  bg-info text-white">
+    <h1 class="modal-title fs-5" id="exampleModalLabel">Book Form</h1>
+    <button type="button" class="btn btn-transparent btn-icon btn-lg text-light" data-bs-dismiss="modal" aria-label="Close">
+        <i class="bi bi-x-circle"></i>
+    </button>
+</div>
+
+<div class=" modal-body container-fluid">
+    <form id="formAddEditSave_UMS" data-ajax="true" data-ajax-method="post" 
+          data-ajax-success="OnSuccess(this.id,data, status, xhr);" data-ajax-failure="OnFailure(xhr, status, error);"
+          asp-action="_BookPost" asp-controller="Home" class="row needs-validation " novalidate>
+        
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Bookid" />
+        <div class="row " >
+            <div class="col-md-6" >
+                <div class="form-s-control w-100 mt-2">
+                    <input asp-for="Bookname" placeholder=" " class="form-s-outline w-100" type="text">
+                    <label class="form-s-label">Book Name </label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-s-control w-100 mt-2">
+                    <input asp-for="Author"  placeholder=" " class="form-s-outline w-100" type="text">
+                    <label class="form-s-label">Author</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-s-control w-100 mt-2">
+                    <input asp-for="BorrowerName"  placeholder=" " class="form-s-outline w-100" type="text">
+                    <label class="form-s-label">Borrower Name</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-s-control w-100 mt-2">
+                    <input placeholder=" " asp-for="Dateofissue" class="form-s-outline w-100" type="date">
+                    <label class="form-s-label">Date Of Issue</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+                <div class="form-s-control w-100 mt-2">
+                    <select class="form-s-outline form-select form-select-md h-100 p-2" asp-for="Genere" asp-items="@(new SelectList(GenereType, "ID", "Name"))" data-allow-clear="true" aria-label="Default select example">
+                        <option value="">Select Genere</option>
+                    </select>
+                    <label class="form-s-label">Genere</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-s-control w-100 mt-2">
+                    <input placeholder=" " asp-for="City" class="form-s-outline w-100" type="text">
+                    <label class="form-s-label">City</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="offset-md-4 col-md-8">
+                <input type="submit" value="Save" class="btn btn-info text-white js-btn-modal-form-submit" data-check-before-submit="validateForm()" />
+                <button type="button" class="btn btn-outline-info" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+
+    function validateForm() {
+        // Implement your validation logic here
+        var formIsValid = true; // Assume form is valid by default
+
+        // Example: Validate form fields
+        var inputs = document.querySelectorAll('#formAddEditSave_UMS inputs');
+        inputs.forEach(function (input) {
+            if (!input.value) {
+                formIsValid = false;
+            }
+        });
+        var textarea = document.querySelectorAll('#formAddEditSave_UMS textarea');
+        textarea.forEach(function (input) {
+            if (!input.value) {
+                formIsValid = false;
+            }
+        });
+        var select = document.querySelectorAll('#formAddEditSave_UMS select');
+        select.forEach(function (input) {
+            if (!input.value) {
+                formIsValid = false;
+            }
+        });
+        // Return validation result
+        return formIsValid;
+    }
+
+
+    (function () {
+        'use strict'
+
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+
+   
+</script>

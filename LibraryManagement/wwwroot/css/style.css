@@ -1,0 +1,56 @@
+:root, [data-theme="light"] {
+    --primary-color: #01BCE9;
+    --nav-active: #34b9bb;
+    --body-color: #FAFAFA;
+    --white-color: #FFFFFF;
+    --secondary-color: #0D1556;
+}
+
+.btn-theme{
+    color:blueviolet;
+}
+
+/* form */
+.form-s-control {
+    position: relative;
+}
+
+.form-s-label {
+    position: absolute;
+    font-size: 1rem;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    color: var(--secondary-color);
+    padding: 0 0.3rem;
+    margin: 0 0.5rem;
+    transition: .1s ease-out;
+    transform-origin: left top;
+    pointer-events: none;
+}
+
+.form-s-outline {
+    font-size: 1rem;
+    outline: none;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    padding: 1rem 0.7rem;
+    color: black;
+    transition: 0.1s ease-out;
+}
+
+    .form-s-outline:focus {
+        border-color: var(--primary-color);
+    }
+
+        .form-s-outline:focus + .form-s-label {
+            color: var(--secondary-color);
+            top: 0;
+            transform: translateY(-50%) scale(.9);
+        }
+
+    .form-s-outline:not(:placeholder-shown) + .form-s-label {
+        top: 0;
+        transform: translateY(-50%) scale(.9);
+    }
