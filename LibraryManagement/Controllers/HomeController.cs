@@ -30,9 +30,8 @@ namespace LibraryManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> _SearchResultBook(BookModel bm)
         {
-            ViewBag.ComboBoxBorrower = _bookRepositories.ComboBoxBorrower();
 
-            BookModel v = _bookRepositories.GetBooks(bm);
+            BookModel v =await _bookRepositories.GetBooks(bm);
             return PartialView("_BookList", v);
         }
         #endregion

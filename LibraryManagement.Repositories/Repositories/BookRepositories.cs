@@ -31,13 +31,11 @@ namespace LibraryManagement.Repositories.Repositories
         /// </summary>
         /// <param name="bm"></param>
         /// <returns></returns>
-        public BookModel GetBooks(BookModel bm)
+        public async Task<BookModel> GetBooks(BookModel bm)
         {
             BookModel dm = new BookModel();
 
-
-
-            List<ViewBook> allData = (from book in _context.Books
+            List<ViewBook> allData = await (from book in _context.Books
                                       join borrower in _context.Borrowers
                                       on book.Borrowerid equals borrower.Borrowerid into BookGroup
                                       from borrowers in BookGroup.DefaultIfEmpty()
@@ -58,10 +56,7 @@ namespace LibraryManagement.Repositories.Repositories
                                           Genere = (short)book.Genere,
                                           Createddate = book.Createddate,
 
-                                      }).OrderBy(x => x.Createddate).ToList();
-
-
-           
+                                      }).OrderBy(x => x.Createddate).ToListAsync();
 
             dm.TotalPages = (int)Math.Ceiling((double)allData.Count() / bm.PageSize);
             dm.BookList = allData.Skip((bm.CurrentPage - 1) * bm.PageSize).Take(bm.PageSize).ToList();

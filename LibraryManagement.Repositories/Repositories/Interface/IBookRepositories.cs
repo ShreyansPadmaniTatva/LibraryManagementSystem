@@ -10,7 +10,7 @@ namespace LibraryManagement.Repositories.Repositories.Interface
 {
     public interface IBookRepositories
     {
-        BookModel GetBooks(BookModel bm);
+        Task<BookModel> GetBooks(BookModel bm);
         Task<bool> AddBook(ViewBook vb);
         Task<bool> EditBook(ViewBook vb);
         ViewBook GetBookById(int BookId);
